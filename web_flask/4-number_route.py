@@ -19,16 +19,17 @@ def c_text(text):
     return 'C ' + text.replace('_', ' ')
 
 
-@app.route('/python/<text>', strict_slashes=False)
-def python_text(text):
-    default_text = text or 'is cool'
-    result = f"Python {default_text}"
-    return result
+@app.route("/python/", defaults={"text": "is cool"}, strict_slashes=False)
+@app.route("/python/<text>", strict_slashes=False)
+def python_route(text):
+    """python route"""
+    text = text.replace("_", " ")
+    return "Python {}".format(text)
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def int(n):
-    return n + 'is a number'
+@app.route("/number/<int:n>", strict_slashes=False)
+def number(n):
+    return "{} is a number".format(n)
 
 
 if __name__ == '__main__':
