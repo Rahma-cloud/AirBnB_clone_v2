@@ -8,13 +8,25 @@ from models.state import State
 app = Flask(__name__, template_folder="templates")
 
 
-@app.route('/cities_by_states', strict_slashes=False)
-def cities_by_states():
+@app.route("/states", strict_slashes=False)
+def states():
     """
     Display a list of states and their cities.
     """
     states = storage.all(State).values()
-    return render_template('8-cities_by_states.html', states=states)
+    return render_template("9-states.html", states=states)
+
+
+@app.route("/states/<id>", strict_slashes=False)
+def list_cities(id):
+    """list cities route"""
+    key = f"State.{id}"
+    states = storage.all(State)
+    if key in states:
+        state = states[key]
+        return render_template("9-states.html", state=state)
+    else:
+        return render_template("9-states.html", not_found=True)
 
 
 @app.teardown_appcontext
